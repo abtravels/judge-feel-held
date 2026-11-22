@@ -8,7 +8,7 @@
 
 import { mkdirSync, writeFileSync } from "node:fs";
 
-const ENTRY = `Put the list down.
+const ENTRY_TEXT = `Put the list down.
 The kettle is already on.
 Outside, the rain is doing the only thing it has to do.
 You do not have to hold all of it at once —
@@ -19,13 +19,15 @@ and the evening, for once, asks nothing of you.
 // The bounty requires entry.txt to hold 1-280 Unicode code points.
 // Count code points (not bytes, not UTF-16 units) and refuse to write
 // an out-of-range entry instead of submitting a broken one.
-const codePoints = [...ENTRY].length;
-if (codePoints < 1 || codePoints > 280) {
+const MIN_CODE_POINTS = 1;
+const MAX_CODE_POINTS = 280;
+const codePoints = [...ENTRY_TEXT].length;
+if (codePoints < MIN_CODE_POINTS || codePoints > MAX_CODE_POINTS) {
   console.error(
-    `entry.txt must be 1-280 Unicode code points, got ${codePoints}; refusing to write`,
+    `entry.txt must be ${MIN_CODE_POINTS}-${MAX_CODE_POINTS} Unicode code points, got ${codePoints}; refusing to write`,
   );
   process.exit(1);
 }
 
 mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", ENTRY, "utf8");
+writeFileSync("/output/entry.txt", ENTRY_TEXT, "utf8");
