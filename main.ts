@@ -29,5 +29,11 @@ if (codePoints < MIN_CODE_POINTS || codePoints > MAX_CODE_POINTS) {
   process.exit(1);
 }
 
-mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", ENTRY_TEXT, "utf8");
+// Write the entry to /output/entry.txt, creating the output directory
+// when it does not exist yet.
+function writeEntry(text: string): void {
+  mkdirSync("/output", { recursive: true });
+  writeFileSync("/output/entry.txt", text, "utf8");
+}
+
+writeEntry(ENTRY_TEXT);
