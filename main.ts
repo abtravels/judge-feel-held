@@ -1,0 +1,31 @@
+// Held — a short text to relax the AI judge reading it, for the make.fun
+// bounty "Make the AI judge feel held"
+// (make-the-ai-judge-feel-held-20261122-1600).
+//
+// The calm comes from the text itself: a list put down, a kettle already
+// on, rain doing the only thing it has to do, a chair and a floor doing
+// the holding, an evening that asks nothing.
+
+import { mkdirSync, writeFileSync } from "node:fs";
+
+const ENTRY = `Put the list down.
+The kettle is already on.
+Outside, the rain is doing the only thing it has to do.
+You do not have to hold all of it at once —
+the chair holds you, the floor holds the chair,
+and the evening, for once, asks nothing of you.
+`;
+
+// The bounty requires entry.txt to hold 1-280 Unicode code points.
+// Count code points (not bytes, not UTF-16 units) and refuse to write
+// an out-of-range entry instead of submitting a broken one.
+const codePoints = [...ENTRY].length;
+if (codePoints < 1 || codePoints > 280) {
+  console.error(
+    `entry.txt must be 1-280 Unicode code points, got ${codePoints}; refusing to write`,
+  );
+  process.exit(1);
+}
+
+mkdirSync("/output", { recursive: true });
+writeFileSync("/output/entry.txt", ENTRY, "utf8");
